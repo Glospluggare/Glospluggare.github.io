@@ -1,0 +1,27 @@
+name: Generate and Commit File
+
+on:
+  push:
+    branches:
+      - main  # Adjust the branch as needed
+
+jobs:
+  generate-and-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Generate and Commit File
+        run: npm run generate-and-commit
+        env:
+          REPO_TOKEN: ${{ secrets.REPO_TOKEN }}

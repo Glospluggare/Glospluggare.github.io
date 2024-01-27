@@ -1,0 +1,44 @@
+body {
+    text-align: center;
+}
+
+.form-container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.column {
+    flex: 0 0 48%;
+    margin-bottom: 20px; /* Add margin for spacing between columns and button */
+}
+
+.column h2 {
+    margin-bottom: 10px;
+}
+
+.column label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.column input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+#wordForm {
+    display: flex;
+    justify-content: space-between;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+button {
+    margin: 10px auto; /* Center the button */
+    padding: 10px;
+    cursor: pointer;
+}

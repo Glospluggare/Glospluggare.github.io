@@ -1,0 +1,9 @@
+{
+    "name": "glospluggare",
+    "version": "1.0.0",
+    "description": "A brief description of your project",
+    "scripts": {
+      "generate-and-commit": "node script.js"
+    }
+  }
+  

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Two Columns Form</title>
+</head>
+<body>
+
+    <h1>Two Columns Form</h1>
+
+    <div class="form-container">
+        <div class="column">
+            <h2>Swedish</h2>
+            <input type="text" id="field2" name="field2">
+        </div>
+
+        <div class="column">
+            <h2>German</h2>
+            <input type="text" id="field4" name="field4">
+        </div>
+    </div>
+
+    <div id="wordForm" class="form-container">
+        <!-- Dynamically added input fields will be inserted here -->
+    </div>
+
+    <div class="button-container">
+        <button type="button" onclick="addInputField()">Add More Fields</button>
+        <button type="button" onclick="generateAndUploadFile()">Submit</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
