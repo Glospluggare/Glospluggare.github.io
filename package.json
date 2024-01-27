@@ -3,7 +3,8 @@
     "version": "1.0.0",
     "description": "A brief description of your project",
     "scripts": {
-      "generate-and-commit": "node script.js"
-    }
+        "generate-and-commit": "node teacher/script.js"
+      }
+      
   }
   
