@@ -23,10 +23,8 @@ function addInputField() {
 
 async function generateAndUploadFile() {
     try {
-        // Fetch URL of the repository
-        const repoUrl = 'https://api.github.com/repos/Glospluggare/glosor';
-
-        // Fetch current branch (optional)
+        // Fetch repository information
+        const repoUrl = 'https://api.github.com/repos/Glospluggare/Glospluggare.github.io';
         const response = await fetch(repoUrl);
 
         if (!response.ok) {
@@ -34,14 +32,13 @@ async function generateAndUploadFile() {
         }
 
         const data = await response.json();
+        console.log('Fetched repository data:', data);
 
-        // Log the fetched data for debugging
-        console.log('Fetched data:', data);
-
+        // Get the default branch of the repository
         const branch = data.default_branch || 'main';
 
-        // Construct the API URL for creating a new file
-        const apiUrl = `${repoUrl}/contents/words.txt`;
+        // Construct the API URL for creating a new file inside the glosor folder
+        const apiUrl = `${repoUrl}/contents/glosor/words.txt`;
 
         // Gather words from input fields of each column
         const wordsColumn1 = Array.from(document.querySelectorAll('.column:nth-child(1) input')).map(input => input.value);
@@ -72,7 +69,8 @@ async function generateAndUploadFile() {
             },
             body: JSON.stringify({
                 message: 'Add words.txt',
-                content: blob,
+                content: btoa(formattedWords), // Encode content as base64
+                branch: branch,
             }),
         });
 
