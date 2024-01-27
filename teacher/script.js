@@ -24,15 +24,24 @@ function addInputField() {
 async function generateAndUploadFile() {
     try {
         // Fetch URL of the repository
-        const repoUrl = 'https://api.github.com/repos/Glospluggare/glosor/';
+        const repoUrl = 'https://api.github.com/repos/Glospluggare/glosor';
 
         // Fetch current branch (optional)
         const response = await fetch(repoUrl);
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch repository information. Status: ${response.status}. Make sure the repository exists and is accessible.`);
+        }
+
         const data = await response.json();
+
+        // Log the fetched data for debugging
+        console.log('Fetched data:', data);
+
         const branch = data.default_branch || 'main';
 
         // Construct the API URL for creating a new file
-        const apiUrl = `${repoUrl}contents/words.txt`;
+        const apiUrl = `${repoUrl}/contents/words.txt`;
 
         // Gather words from input fields of each column
         const wordsColumn1 = Array.from(document.querySelectorAll('.column:nth-child(1) input')).map(input => input.value);
