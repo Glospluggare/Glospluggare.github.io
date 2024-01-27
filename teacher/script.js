@@ -57,22 +57,23 @@ async function generateAndUploadFile() {
         const formData = new FormData();
         formData.append('file', blob, 'words.txt');
 
-        // Fetch personal access token from a secure location
-        const { REPO_TOKEN } = process.env;
+// Fetch personal access token from GitHub Actions environment
+const token = process.env.REPO_TOKEN || '';
 
-        // Make a request to GitHub API to create a new file
-        const apiResponse = await fetch(apiUrl, {
-            method: 'PUT',
-            headers: {
-                'Authorization': `Bearer ${REPO_TOKEN}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                message: 'Add words.txt',
-                content: btoa(formattedWords), // Encode content as base64
-                branch: branch,
-            }),
-        });
+// Make a request to GitHub API to create a new file
+const apiResponse = await fetch(apiUrl, {
+    method: 'PUT',
+    headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+        message: 'Add words.txt',
+        content: btoa(formattedWords), // Encode content as base64
+        branch: branch,
+    }),
+});
+
 
         // Check if the file was successfully created
         if (apiResponse.ok) {
