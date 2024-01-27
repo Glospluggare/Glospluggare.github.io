@@ -40,7 +40,7 @@ async function generateAndUploadFile() {
     formData.append('file', blob, 'words.txt');
 
     // Fetch URL of the repository
-    const repoUrl = 'https://api.github.com/repos/Glospluggare/glosor/contents/';
+    const repoUrl = 'https://api.github.com/repos/Glospluggare/glosor/';
 
 
     // Fetch current branch (optional)
