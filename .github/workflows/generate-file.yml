@@ -3,7 +3,7 @@ name: Generate and Commit File
 on:
   push:
     branches:
-      - main  # Adjust the branch as needed
+      - main
 
 jobs:
   generate-and-commit:
@@ -14,9 +14,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
-          node-version: '20'
+          node-version: '20'  # Update to a correct version
 
       - name: Install Dependencies
         run: npm install
