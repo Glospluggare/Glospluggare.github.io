@@ -58,7 +58,8 @@ async function generateAndUploadFile() {
         formData.append('file', blob, 'words.txt');
 
 // Fetch personal access token from GitHub Actions environment
-const token = process.env.REPO_TOKEN || '';
+const token = process.env.REPO_TOKEN || '${{ secrets.REPO_TOKEN }}';
+
 
 // Make a request to GitHub API to create a new file
 const apiResponse = await fetch(apiUrl, {
