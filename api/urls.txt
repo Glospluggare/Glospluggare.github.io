@@ -1,2 +1,2 @@
-index.html
-config.json
+index.html,
+config.json,
