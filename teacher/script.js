@@ -21,68 +21,35 @@ function addInputField() {
     column2.appendChild(newInput2);
 }
 
-async function generateAndUploadFile() {
-    try {
-        // Fetch repository information
-        const repoUrl = 'https://api.github.com/repos/Glospluggare/Glospluggare.github.io';
-        const response = await fetch(repoUrl);
+function downloadFile() {
+    // Gather words from input fields of each column
+    const wordsColumn1 = Array.from(document.querySelectorAll('.swedish-input')).map(input => input.value);
+    const wordsColumn2 = Array.from(document.querySelectorAll('.german-input')).map(input => input.value);
 
-        if (!response.ok) {
-            throw new Error(`Failed to fetch repository information. Status: ${response.status}. Make sure the repository exists and is accessible.`);
-        }
-
-        const data = await response.json();
-        console.log('Fetched repository data:', data);
-
-        // Get the default branch of the repository
-        const branch = data.default_branch || 'main';
-
-        // Construct the API URL for creating a new file inside the glosor folder
-        const apiUrl = `${repoUrl}/contents/glosor/words.txt`;
-
-        // Gather words from input fields of each column
-        const wordsColumn1 = Array.from(document.querySelectorAll('.column:nth-child(1) input')).map(input => input.value);
-        const wordsColumn2 = Array.from(document.querySelectorAll('.column:nth-child(2) input')).map(input => input.value);
-
-        // Combine the words of each column with the separator
-        const combinedWords = wordsColumn1.map((word, index) => `${word} % ${wordsColumn2[index]}`).join(' ');
-
-        // Add the final separator
-        const formattedWords = `${combinedWords} &`;
-
-        // Create a blob with the formatted words
-        const blob = new Blob([formattedWords], { type: 'text/plain' });
-
-        // Create a FormData object and append the blob
-        const formData = new FormData();
-        formData.append('file', blob, 'words.txt');
-
-// Fetch personal access token from GitHub Actions environment
-const token = process.env.REPO_TOKEN || '';
-
-// Make a request to GitHub API to create a new file
-const apiResponse = await fetch(apiUrl, {
-    method: 'PUT',
-    headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-        message: 'Add words.txt',
-        content: btoa(formattedWords), // Encode content as base64
-        branch: branch,
-    }),
-});
-
-
-        // Check if the file was successfully created
-        if (apiResponse.ok) {
-            alert('File successfully uploaded to GitHub Pages!');
-        } else {
-            alert('Failed to upload the file. Please check your personal access token and repository information.');
-        }
-    } catch (error) {
-        console.error('Error in generateAndUploadFile:', error.message);
-        // Handle the error as needed
+    // Check if all input fields are filled
+    if (wordsColumn1.some(word => !word) || wordsColumn2.some(word => !word)) {
+        alert('Please fill all input fields before downloading.');
+        return;
     }
+
+    // Combine the words of each column with one % separator
+    const formattedWords = wordsColumn1.join(' ') + ' % ' + wordsColumn2.join(' ');
+
+    // Add the final separator
+    const finalOutput = `${formattedWords} &`;
+
+    // Create a blob with the formatted words
+    const blob = new Blob([finalOutput], { type: 'text/plain' });
+
+    // Create a download link
+    const downloadLink = document.createElement('a');
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.download = 'words.txt';
+
+    // Append the link to the body and trigger the click event
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+
+    // Remove the link from the body
+    document.body.removeChild(downloadLink);
 }

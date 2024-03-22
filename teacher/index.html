@@ -4,21 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>Two Columns Form</title>
+    <title>Add Glosor</title>
+    <link rel="shortcut icon" href="icon.ico" type="image/x-icon">
 </head>
 <body>
 
-    <h1>Two Columns Form</h1>
+    <h1>Add Glosor</h1>
 
     <div class="form-container">
         <div class="column">
-            <h2>Swedish</h2>
-            <input type="text" id="field2" name="field2">
+            <h2>German</h2>
+            <input type="text" class="german-input" placeholder="Enter German word">
         </div>
 
         <div class="column">
-            <h2>German</h2>
-            <input type="text" id="field4" name="field4">
+            <h2>Swedish</h2>
+            <input type="text" class="swedish-input" placeholder="Enter Swedish word">
         </div>
     </div>
 
@@ -28,98 +29,9 @@
 
     <div class="button-container">
         <button type="button" onclick="addInputField()">Add More Fields</button>
-        <button onclick="generateAndUploadFile()">Submit</button>
-
-
+        <button type="button" onclick="downloadFile()">Download</button>
     </div>
 
-    <script>let wordCount = 1;
-
-        function addInputField() {
-            wordCount++;
-        
-            // Clone the existing input fields
-            const column1 = document.querySelector('.column:nth-child(1)');
-            const column2 = document.querySelector('.column:nth-child(2)');
-            const input1 = column1.querySelector('input:last-child');
-            const input2 = column2.querySelector('input:last-child');
-        
-            const newInput1 = input1.cloneNode();
-            const newInput2 = input2.cloneNode();
-        
-            // Remove placeholders for the new input fields
-            newInput1.placeholder = '';
-            newInput2.placeholder = '';
-        
-            // Append the new input fields to the wordForm container
-            column1.appendChild(newInput1);
-            column2.appendChild(newInput2);
-        }
-        
-        async function generateAndUploadFile() {
-            try {
-                // Fetch repository information
-                const repoUrl = 'https://api.github.com/repos/Glospluggare/Glospluggare.github.io';
-                const response = await fetch(repoUrl);
-        
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch repository information. Status: ${response.status}. Make sure the repository exists and is accessible.`);
-                }
-        
-                const data = await response.json();
-                console.log('Fetched repository data:', data);
-        
-                // Get the default branch of the repository
-                const branch = data.default_branch || 'main';
-        
-                // Construct the API URL for creating a new file inside the glosor folder
-                const apiUrl = `${repoUrl}/contents/glosor/words.txt`;
-        
-                // Gather words from input fields of each column
-                const wordsColumn1 = Array.from(document.querySelectorAll('.column:nth-child(1) input')).map(input => input.value);
-                const wordsColumn2 = Array.from(document.querySelectorAll('.column:nth-child(2) input')).map(input => input.value);
-        
-                // Combine the words of each column with the separator
-                const combinedWords = wordsColumn1.map((word, index) => `${word} % ${wordsColumn2[index]}`).join(' ');
-        
-                // Add the final separator
-                const formattedWords = `${combinedWords} &`;
-        
-                // Create a blob with the formatted words
-                const blob = new Blob([formattedWords], { type: 'text/plain' });
-        
-                // Create a FormData object and append the blob
-                const formData = new FormData();
-                formData.append('file', blob, 'words.txt');
-        
-                // Fetch personal access token from GitHub Actions environment
-                const token = '';
-        
-                // Make a request to GitHub API to create a new file
-                const apiResponse = await fetch(apiUrl, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        message: 'Add words.txt',
-                        content: btoa(formattedWords), // Encode content as base64
-                        branch: branch,
-                    }),
-                });
-        
-                // Check if the file was successfully created
-                if (apiResponse.ok) {
-                    alert('File successfully uploaded to GitHub Pages!');
-                } else {
-                    alert('Failed to upload the file. Please check your personal access token and repository information.');
-                }
-            } catch (error) {
-                console.error('Error in generateAndUploadFile:', error.message);
-                // Handle the error as needed
-            }
-        }
-        </script>
+    <script src="script.js"></script>
 </body>
 </html>
